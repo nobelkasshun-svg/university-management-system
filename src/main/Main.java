@@ -1,27 +1,96 @@
 package main;
 
+import exceptions.*;
 import model.Student;
 import model.Teacher;
-import database.Database;
 
 public class Main {
+
     public static void main(String[] args) {
 
-        // Member 1 - Inheritance
-        Student s1 = new Student("Abel", 20, "STU001");
-        Student s2 = new Student("Sara", 22, "STU002");
-        Teacher t1 = new Teacher("Dr. John", 45, "Math");
+        System.out.println("===== University Management System =====\n");
 
-        s1.displayInfo();
-        s2.displayInfo();
-        t1.displayInfo();
+        System.out.println("--- Test 1: Valid Student ---");
+        try {
+            Student s1 = new Student("Biruk Alemu", 21, "UGR/0113/24");
+            s1.displayInfo();
+        } catch (UniversityException e) {
+            System.out.println("Error: " + e);
+        }
 
-        // Member 5 - Database
-        Database db = new Database();
-        db.addStudent(s1);
-        db.addStudent(s2);
-        db.addTeacher(t1);
-        db.showAllStudents();
-        db.showAllTeachers();
+        System.out.println("\n--- Test 2: Invalid Age ---");
+        try {
+            Student s2 = new Student("Abel Tesfaye", -5, "UGR/0200/24");
+            s2.displayInfo();
+        } catch (InvalidAgeException e) {
+            System.out.println("Caught InvalidAgeException: " + e.getMessage());
+        } catch (UniversityException e) {
+            System.out.println("Caught UniversityException: " + e.getMessage());
+        }
+
+        System.out.println("\n--- Test 3: Invalid Name ---");
+        try {
+            Student s3 = new Student("", 20, "UGR/0300/24");
+            s3.displayInfo();
+        } catch (InvalidNameException e) {
+            System.out.println("Caught InvalidNameException: " + e.getMessage());
+        } catch (UniversityException e) {
+            System.out.println("Caught UniversityException: " + e.getMessage());
+        }
+
+        System.out.println("\n--- Test 4: Invalid Student ID ---");
+        try {
+            Student s4 = new Student("Sara Kebede", 22, "S");
+            s4.displayInfo();
+        } catch (InvalidStudentIdException e) {
+            System.out.println("Caught InvalidStudentIdException: " + e.getMessage());
+        } catch (UniversityException e) {
+            System.out.println("Caught UniversityException: " + e.getMessage());
+        }
+
+        System.out.println("\n--- Test 5: Valid Teacher ---");
+        try {
+            Teacher t1 = new Teacher("Dr. Hailu Mersha", 45, "Software Engineering");
+            t1.displayInfo();
+        } catch (UniversityException e) {
+            System.out.println("Error: " + e);
+        }
+
+        System.out.println("\n--- Test 6: Invalid Subject ---");
+        try {
+            Teacher t2 = new Teacher("Dr. Tigist Bekele", 38, "");
+            t2.displayInfo();
+        } catch (InvalidSubjectException e) {
+            System.out.println("Caught InvalidSubjectException: " + e.getMessage());
+        } catch (UniversityException e) {
+            System.out.println("Caught UniversityException: " + e.getMessage());
+        }
+
+        System.out.println("\n--- Test 7: Student Not Found ---");
+        try {
+            findStudent("UGR/9999/99");
+        } catch (StudentNotFoundException e) {
+            System.out.println("Caught StudentNotFoundException: " + e.getMessage());
+            System.out.println("Error Code: " + e.getErrorCode());
+        }
+
+        System.out.println("\n--- Test 8: Duplicate Student ---");
+        try {
+            registerStudent("UGR/0113/24");
+        } catch (DuplicateStudentException e) {
+            System.out.println("Caught DuplicateStudentException: " + e.getMessage());
+        }
+
+        System.out.println("\n===== All Tests Completed =====");
+    }
+
+    static void findStudent(String id) throws StudentNotFoundException {
+        System.out.println("Searching for student: " + id);
+        throw new StudentNotFoundException(id);
+    }
+
+    static void registerStudent(String id) throws DuplicateStudentException {
+        System.out.println("Attempting to register student: " + id);
+        throw new DuplicateStudentException(id);
     }
 }
