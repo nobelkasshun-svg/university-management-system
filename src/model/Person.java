@@ -1,16 +1,36 @@
 package model;
 
-public abstract class Person {
-    String name;
-    int age;
-    String email;
-    String phoneNumber;
+import exceptions.InvalidAgeException;
+import exceptions.InvalidNameException;
 
-    public Person(String name, int age, String email, String phoneNumber) {
-        this.name = name;
-        this.age = age;
+public abstract class Person {
+    public String name;
+    public int age;
+    public String email;
+    public String phoneNumber;
+
+    public Person(String name, int age, String email, String phoneNumber) throws InvalidNameException, InvalidAgeException {
+        setName(name);
+        setAge(age);
         this.email = email;
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setName(String name) throws InvalidNameException {
+        if (name == null || name.trim().isEmpty()) {
+            throw new InvalidNameException(name, "Name cannot be null or empty");
+        }
+        if (!name.matches("[a-zA-Z .]+")) {
+            throw new InvalidNameException(name, "Name can only contain letters and spaces");
+        }
+        this.name = name.trim();
+    }
+
+    public void setAge(int age) throws InvalidAgeException {
+        if (age <= 0 || age > 120) {
+            throw new InvalidAgeException(age);
+        }
+        this.age = age;
     }
 
     public void displayInfo() {

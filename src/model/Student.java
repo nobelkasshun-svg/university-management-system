@@ -1,13 +1,33 @@
 package model;
 
-public class Student extends Person {
-    String studentId;
-    String courseName;
+import exceptions.InvalidAgeException;
+import exceptions.InvalidNameException;
+import exceptions.InvalidStudentIdException;
 
-    public Student(String name, int age, String email, String phoneNumber, String studentId, String courseName) {
+public class Student extends Person {
+    private String studentId;
+    private String courseName;
+
+    public Student(String name, int age, String email, String phoneNumber, String studentId, String courseName)
+            throws InvalidNameException, InvalidAgeException, InvalidStudentIdException {
         super(name, age, email, phoneNumber);
-        this.studentId = studentId;
+        setStudentId(studentId);
         this.courseName = courseName;
+    }
+
+    public void setStudentId(String studentId) throws InvalidStudentIdException {
+        if (studentId == null || studentId.trim().isEmpty()) {
+            throw new InvalidStudentIdException(studentId);
+        }
+        this.studentId = studentId;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public String getCourseName() {
+        return courseName;
     }
 
     public void displayInfo() {
