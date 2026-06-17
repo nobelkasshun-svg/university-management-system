@@ -30,10 +30,21 @@ public class Student extends Person {
         return courseName;
     }
 
+    // OVERRIDING - overrides displayInfo() from Person
+    @Override
     public void displayInfo() {
         super.displayInfo();
         System.out.println("Student ID: " + studentId);
         System.out.println("Course: " + courseName);
+    }
+
+    // OVERLOADING - same method name different parameter
+    public void displayInfo(boolean showContact) {
+        displayInfo();
+        if (showContact) {
+            System.out.println("Email: " + email);
+            System.out.println("Phone: " + phoneNumber);
+        }
     }
 
     public String getRole() {
