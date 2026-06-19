@@ -5,6 +5,7 @@ import model.Student;
 import model.Teacher;
 import interfaces.Enrollable;
 import interfaces.Printable;
+import interfaces.Searchable;
 
 public class Main {
     public static void main(String[] args) {
@@ -93,6 +94,30 @@ public class Main {
             
             System.out.println("\n[After enrollment]");
             s5.printDetails();
+        } catch (UniversityException e) {
+            System.out.println("Error: " + e);
+        }
+
+        System.out.println("\n--- Test 10: Searchable ---");
+        try {
+            Student s5 = new Student("Luna Lovegood", 19, "UGR/0500/24", "+251911000005", "luna@university.edu");
+            s5.enroll("Defense Against the Dark Arts");
+            
+            Teacher t1 = new Teacher("Dr. Hailu Mersha", 45, "Software Engineering", "+251922000001", "hailu@university.edu");
+            
+            System.out.println("Search 'Luna':");
+            System.out.println("  Student matches: " + s5.matchesSearch("Luna"));
+            System.out.println("  Teacher matches: " + t1.matchesSearch("Luna"));
+            
+            System.out.println("\nSearch 'Software':");
+            System.out.println("  Student matches: " + s5.matchesSearch("Software"));
+            System.out.println("  Teacher matches: " + t1.matchesSearch("Software"));
+            
+            System.out.println("\nSearch 'UGR/0500/24':");
+            System.out.println("  Student matches: " + s5.matchesSearch("UGR/0500/24"));
+            
+            System.out.println("\nSearch 'Defense':");
+            System.out.println("  Student matches: " + s5.matchesSearch("Defense"));
         } catch (UniversityException e) {
             System.out.println("Error: " + e);
         }
