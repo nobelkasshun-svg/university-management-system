@@ -40,6 +40,10 @@ public class Student extends Person {
         return gpa >= 2.0;
     }
 
+    public boolean isAdult() {
+        return age >= 18;
+    }
+
     @Override
     public void displayInfo() {
         super.displayInfo();

@@ -10,12 +10,12 @@ public class Database {
 
     public void addStudent(Student student) {
         students.add(student);
-        System.out.println("Student added: " + student.getName());
+        System.out.println("Student added: " + student.name);
     }
 
     public void addTeacher(Teacher teacher) {
         teachers.add(teacher);
-        System.out.println("Teacher added: " + teacher.getName());
+        System.out.println("Teacher added: " + teacher.name);
     }
 
     public void showAllStudents() {
