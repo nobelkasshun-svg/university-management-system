@@ -47,6 +47,12 @@ public class Student extends Person {
         }
     }
 
+    // toString() overriding Person's toString()
+    @Override
+    public String toString() {
+        return super.toString() + " | Student ID: " + studentId + " | Course: " + courseName;
+    }
+
     public String getRole() {
         return "Student";
     }

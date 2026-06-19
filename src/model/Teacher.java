@@ -21,6 +21,12 @@ public class Teacher extends Person {
         System.out.println("Subject: " + subject);
     }
 
+    // toString() overriding Person's toString()
+    @Override
+    public String toString() {
+        return super.toString() + " | Subject: " + subject;
+    }
+
     public String getRole() {
         return "Teacher";
     }

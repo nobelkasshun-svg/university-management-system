@@ -41,4 +41,10 @@ public abstract class Person {
     }
 
     public abstract String getRole();
+
+    // toString() in Person
+    @Override
+    public String toString() {
+        return "Name: " + name + " | Age: " + age + " | Email: " + email + " | Phone: " + phoneNumber;
+    }
 }
