@@ -3,9 +3,12 @@ package model;
 import exceptions.InvalidAgeException;
 import exceptions.InvalidNameException;
 import exceptions.InvalidStudentIdException;
+import interfaces.Enrollable;
+import interfaces.Printable;
 
-public class Student extends Person {
+public class Student extends Person implements Enrollable, Printable {
     private String studentId;
+    private String courseName;
 
     public Student(String name, int age, String studentId, String phoneNumber, String email)
             throws InvalidNameException, InvalidAgeException, InvalidStudentIdException {
@@ -24,6 +27,26 @@ public class Student extends Person {
     }
 
     public String getStudentId() { return studentId; }
+    public String getCourseName() { return courseName; }
+
+    @Override
+    public void enroll(String courseName) {
+        if (courseName == null || courseName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Course name cannot be null or empty");
+        }
+        this.courseName = courseName.trim();
+        System.out.println("Student " + getName() + " (ID: " + studentId + ") successfully enrolled in: " + this.courseName);
+    }
+
+    @Override
+    public void printDetails() {
+        displayInfo();
+        if (courseName != null) {
+            System.out.println("Enrolled Course: " + courseName);
+        } else {
+            System.out.println("Enrolled Course: Not enrolled");
+        }
+    }
 
     @Override
     public void displayInfo() {

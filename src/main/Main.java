@@ -3,6 +3,8 @@ package main;
 import exceptions.*;
 import model.Student;
 import model.Teacher;
+import interfaces.Enrollable;
+import interfaces.Printable;
 
 public class Main {
     public static void main(String[] args) {
@@ -77,6 +79,22 @@ public class Main {
             registerStudent("UGR/0113/24");
         } catch (DuplicateStudentException e) {
             System.out.println("Caught DuplicateStudentException: " + e.getMessage());
+        }
+
+        System.out.println("\n--- Test 9: Enrollable & Printable ---");
+        try {
+            Student s5 = new Student("Luna Lovegood", 19, "UGR/0500/24", "+251911000005", "luna@university.edu");
+            
+            System.out.println("[Before enrollment]");
+            s5.printDetails();
+            
+            System.out.println("\n[Enrolling student]");
+            s5.enroll("Defense Against the Dark Arts");
+            
+            System.out.println("\n[After enrollment]");
+            s5.printDetails();
+        } catch (UniversityException e) {
+            System.out.println("Error: " + e);
         }
 
         System.out.println("\n===== All Tests Completed =====");
