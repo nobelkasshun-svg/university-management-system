@@ -4,18 +4,17 @@ import exceptions.InvalidAgeException;
 import exceptions.InvalidNameException;
 import interfaces.Searchable;
 
-public class Person implements Searchable {
+public abstract class Person implements Searchable {
     public String name;
     public int age;
-    private String phoneNumber;
-    private String email;
+    public String email;
+    public String phoneNumber;
 
-    public Person(String name, int age, String phoneNumber, String email)
-            throws InvalidNameException, InvalidAgeException {
+    public Person(String name, int age, String email, String phoneNumber) throws InvalidNameException, InvalidAgeException {
         setName(name);
         setAge(age);
-        setPhoneNumber(phoneNumber);
-        setEmail(email);
+        this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 
     public void setName(String name) throws InvalidNameException {
@@ -35,31 +34,18 @@ public class Person implements Searchable {
         this.age = age;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
-            throw new IllegalArgumentException("Phone number cannot be null or empty");
-        }
-        this.phoneNumber = phoneNumber.trim();
-    }
-
-    public void setEmail(String email) {
-        if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Email cannot be null or empty");
-        }
-        if (!email.contains("@")) {
-            throw new IllegalArgumentException("Email must contain @");
-        }
-        this.email = email.trim();
-    }
-
-    public String getName()        { return name; }
-    public int getAge()            { return age; }
-    public String getPhoneNumber() { return phoneNumber; }
-    public String getEmail()       { return email; }
-
     public void displayInfo() {
-        System.out.println("Name: " + name + ", Age: " + age);
-        System.out.println("Phone: " + phoneNumber + ", Email: " + email);
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("Email: " + email);
+        System.out.println("Phone: " + phoneNumber);
+    }
+
+    public abstract String getRole();
+
+    @Override
+    public String toString() {
+        return "Name: " + name + " | Age: " + age + " | Email: " + email + " | Phone: " + phoneNumber;
     }
 
     @Override
@@ -68,5 +54,9 @@ public class Person implements Searchable {
             return false;
         }
         return name.toLowerCase().contains(keyword.toLowerCase().trim());
+    }
+
+    public String getName() {
+        return name;
     }
 }

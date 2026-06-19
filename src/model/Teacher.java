@@ -8,24 +8,23 @@ import interfaces.Printable;
 public class Teacher extends Person implements Printable {
     public String subject;
 
-    public Teacher(String name, int age, String subject, String phoneNumber, String email)
+    public Teacher(String name, int age, String email, String phoneNumber, String subject)
             throws InvalidNameException, InvalidAgeException, InvalidSubjectException {
-        super(name, age, phoneNumber, email);
+        super(name, age, email, phoneNumber);
         if (subject == null || subject.trim().isEmpty()) {
             throw new InvalidSubjectException(subject);
         }
         this.subject = subject.trim();
     }
 
-    @Override
-    public void printDetails() {
-        displayInfo();
-    }
-
-    @Override
     public void displayInfo() {
         super.displayInfo();
         System.out.println("Subject: " + subject);
+    }
+
+    @Override
+    public void printDetails() {
+        displayInfo();
     }
 
     @Override
@@ -38,5 +37,15 @@ public class Teacher extends Person implements Printable {
         }
         String kw = keyword.toLowerCase().trim();
         return subject.toLowerCase().contains(kw);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " | Subject: " + subject;
+    }
+
+    @Override
+    public String getRole() {
+        return "Teacher";
     }
 }

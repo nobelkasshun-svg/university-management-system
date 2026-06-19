@@ -9,25 +9,69 @@ import interfaces.Printable;
 public class Student extends Person implements Enrollable, Printable {
     private String studentId;
     private String courseName;
+    private double gpa;
+
+    public Student(String name, int age, String email, String phoneNumber, String studentId, String courseName, double gpa)
+            throws InvalidNameException, InvalidAgeException, InvalidStudentIdException {
+        super(name, age, email, phoneNumber);
+        setStudentId(studentId);
+        this.courseName = courseName;
+        this.gpa = gpa;
+    }
 
     public Student(String name, int age, String studentId, String phoneNumber, String email)
             throws InvalidNameException, InvalidAgeException, InvalidStudentIdException {
-        super(name, age, phoneNumber, email);
-        setStudentId(studentId);
+        this(name, age, email, phoneNumber, studentId, null, 0.0);
     }
 
     public void setStudentId(String studentId) throws InvalidStudentIdException {
         if (studentId == null || studentId.trim().isEmpty()) {
-            throw new InvalidStudentIdException(studentId, "Student ID cannot be null or empty");
+            throw new InvalidStudentIdException(studentId);
         }
-        if (studentId.length() < 3) {
-            throw new InvalidStudentIdException(studentId, "Student ID must be at least 3 characters");
-        }
-        this.studentId = studentId.trim();
+        this.studentId = studentId;
     }
 
-    public String getStudentId() { return studentId; }
-    public String getCourseName() { return courseName; }
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public double getGpa() {
+        return gpa;
+    }
+
+    public boolean isPassingGPA() {
+        return gpa >= 2.0;
+    }
+
+    @Override
+    public void displayInfo() {
+        super.displayInfo();
+        System.out.println("Student ID: " + studentId);
+        System.out.println("Course: " + courseName);
+        System.out.println("GPA: " + gpa);
+        System.out.println("Passing: " + isPassingGPA());
+    }
+
+    public void displayInfo(boolean showContact) {
+        displayInfo();
+        if (showContact) {
+            System.out.println("Email: " + email);
+            System.out.println("Phone: " + phoneNumber);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " | Student ID: " + studentId + " | Course: " + courseName + " | GPA: " + gpa;
+    }
+
+    public String getRole() {
+        return "Student";
+    }
 
     @Override
     public void enroll(String courseName) {
@@ -41,17 +85,6 @@ public class Student extends Person implements Enrollable, Printable {
     @Override
     public void printDetails() {
         displayInfo();
-        if (courseName != null) {
-            System.out.println("Enrolled Course: " + courseName);
-        } else {
-            System.out.println("Enrolled Course: Not enrolled");
-        }
-    }
-
-    @Override
-    public void displayInfo() {
-        super.displayInfo();
-        System.out.println("Student ID: " + studentId);
     }
 
     @Override
