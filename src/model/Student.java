@@ -3,8 +3,10 @@ package model;
 import exceptions.InvalidAgeException;
 import exceptions.InvalidNameException;
 import exceptions.InvalidStudentIdException;
+import interfaces.Enrollable;
+import interfaces.Printable;
 
-public class Student extends Person {
+public class Student extends Person implements Enrollable, Printable {
     private String studentId;
     private String courseName;
     private double gpa;
@@ -15,6 +17,11 @@ public class Student extends Person {
         setStudentId(studentId);
         this.courseName = courseName;
         this.gpa = gpa;
+    }
+
+    public Student(String name, int age, String studentId, String phoneNumber, String email)
+            throws InvalidNameException, InvalidAgeException, InvalidStudentIdException {
+        this(name, age, email, phoneNumber, studentId, null, 0.0);
     }
 
     public void setStudentId(String studentId) throws InvalidStudentIdException {
@@ -68,5 +75,32 @@ public class Student extends Person {
 
     public String getRole() {
         return "Student";
+    }
+
+    @Override
+    public void enroll(String courseName) {
+        if (courseName == null || courseName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Course name cannot be null or empty");
+        }
+        this.courseName = courseName.trim();
+        System.out.println("Student " + getName() + " (ID: " + studentId + ") successfully enrolled in: " + this.courseName);
+    }
+
+    @Override
+    public void printDetails() {
+        displayInfo();
+    }
+
+    @Override
+    public boolean matchesSearch(String keyword) {
+        if (super.matchesSearch(keyword)) {
+            return true;
+        }
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return false;
+        }
+        String kw = keyword.toLowerCase().trim();
+        return studentId.toLowerCase().contains(kw) ||
+               (courseName != null && courseName.toLowerCase().contains(kw));
     }
 }
