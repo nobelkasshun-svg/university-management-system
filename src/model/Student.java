@@ -7,12 +7,14 @@ import exceptions.InvalidStudentIdException;
 public class Student extends Person {
     private String studentId;
     private String courseName;
+    private double gpa;
 
-    public Student(String name, int age, String email, String phoneNumber, String studentId, String courseName)
+    public Student(String name, int age, String email, String phoneNumber, String studentId, String courseName, double gpa)
             throws InvalidNameException, InvalidAgeException, InvalidStudentIdException {
         super(name, age, email, phoneNumber);
         setStudentId(studentId);
         this.courseName = courseName;
+        this.gpa = gpa;
     }
 
     public void setStudentId(String studentId) throws InvalidStudentIdException {
@@ -30,15 +32,23 @@ public class Student extends Person {
         return courseName;
     }
 
-    // OVERRIDING - overrides displayInfo() from Person
+    public double getGpa() {
+        return gpa;
+    }
+
+    public boolean isPassingGPA() {
+        return gpa >= 2.0;
+    }
+
     @Override
     public void displayInfo() {
         super.displayInfo();
         System.out.println("Student ID: " + studentId);
         System.out.println("Course: " + courseName);
+        System.out.println("GPA: " + gpa);
+        System.out.println("Passing: " + isPassingGPA());
     }
 
-    // OVERLOADING - same method name different parameter
     public void displayInfo(boolean showContact) {
         displayInfo();
         if (showContact) {
@@ -47,10 +57,9 @@ public class Student extends Person {
         }
     }
 
-    // toString() overriding Person's toString()
     @Override
     public String toString() {
-        return super.toString() + " | Student ID: " + studentId + " | Course: " + courseName;
+        return super.toString() + " | Student ID: " + studentId + " | Course: " + courseName + " | GPA: " + gpa;
     }
 
     public String getRole() {
