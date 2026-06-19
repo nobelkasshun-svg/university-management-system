@@ -2,8 +2,9 @@ package model;
 
 import exceptions.InvalidAgeException;
 import exceptions.InvalidNameException;
+import interfaces.Searchable;
 
-public class Person {
+public class Person implements Searchable {
     public String name;
     public int age;
     private String phoneNumber;
@@ -59,5 +60,13 @@ public class Person {
     public void displayInfo() {
         System.out.println("Name: " + name + ", Age: " + age);
         System.out.println("Phone: " + phoneNumber + ", Email: " + email);
+    }
+
+    @Override
+    public boolean matchesSearch(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return false;
+        }
+        return name.toLowerCase().contains(keyword.toLowerCase().trim());
     }
 }

@@ -27,4 +27,16 @@ public class Teacher extends Person implements Printable {
         super.displayInfo();
         System.out.println("Subject: " + subject);
     }
+
+    @Override
+    public boolean matchesSearch(String keyword) {
+        if (super.matchesSearch(keyword)) {
+            return true;
+        }
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return false;
+        }
+        String kw = keyword.toLowerCase().trim();
+        return subject.toLowerCase().contains(kw);
+    }
 }

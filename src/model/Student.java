@@ -53,4 +53,17 @@ public class Student extends Person implements Enrollable, Printable {
         super.displayInfo();
         System.out.println("Student ID: " + studentId);
     }
+
+    @Override
+    public boolean matchesSearch(String keyword) {
+        if (super.matchesSearch(keyword)) {
+            return true;
+        }
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return false;
+        }
+        String kw = keyword.toLowerCase().trim();
+        return studentId.toLowerCase().contains(kw) ||
+               (courseName != null && courseName.toLowerCase().contains(kw));
+    }
 }
