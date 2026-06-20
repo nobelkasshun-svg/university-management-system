@@ -3,8 +3,6 @@ package main;
 import exceptions.*;
 import model.Student;
 import model.Teacher;
-import interfaces.Printable;
-import interfaces.Searchable;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,61 +10,41 @@ public class Main {
 
         System.out.println("--- Test 1: Valid Student ---");
         try {
-            Student s1 = new Student("Biruk Alemu", 21, "UGR/0113/24", "+251911000001", "biruk@university.edu");
+            Student s1 = new Student("Biruk Alemu", 21, "biruk@university.edu", "+251911000001", "UGR/0113/24", "Computer Science", 3.5);
             s1.displayInfo();
-        } catch (UniversityException e) {
+        } catch (InvalidNameException | InvalidAgeException e) {
             System.out.println("Error: " + e);
         }
 
         System.out.println("\n--- Test 2: Invalid Age ---");
         try {
-            Student s2 = new Student("Abel Tesfaye", -5, "UGR/0200/24", "+251911000002", "abel@university.edu");
+            Student s2 = new Student("Abel Tesfaye", -5, "abel@university.edu", "+251911000002", "UGR/0200/24", "Software Engineering", 3.0);
             s2.displayInfo();
         } catch (InvalidAgeException e) {
             System.out.println("Caught InvalidAgeException: " + e.getMessage());
-        } catch (UniversityException e) {
-            System.out.println("Caught UniversityException: " + e.getMessage());
+        } catch (InvalidNameException e) {
+            System.out.println("Caught InvalidNameException: " + e.getMessage());
         }
 
         System.out.println("\n--- Test 3: Invalid Name ---");
         try {
-            Student s3 = new Student("", 20, "UGR/0300/24", "+251911000003", "s3@university.edu");
+            Student s3 = new Student("", 20, "s3@university.edu", "+251911000003", "UGR/0300/24", "Math", 2.8);
             s3.displayInfo();
         } catch (InvalidNameException e) {
             System.out.println("Caught InvalidNameException: " + e.getMessage());
-        } catch (UniversityException e) {
-            System.out.println("Caught UniversityException: " + e.getMessage());
+        } catch (InvalidAgeException e) {
+            System.out.println("Caught InvalidAgeException: " + e.getMessage());
         }
 
-        System.out.println("\n--- Test 4: Invalid Student ID ---");
+        System.out.println("\n--- Test 4: Valid Teacher ---");
         try {
-            Student s4 = new Student("Sara Kebede", 22, "S", "+251911000004", "sara@university.edu");
-            s4.displayInfo();
-        } catch (InvalidStudentIdException e) {
-            System.out.println("Caught InvalidStudentIdException: " + e.getMessage());
-        } catch (UniversityException e) {
-            System.out.println("Caught UniversityException: " + e.getMessage());
-        }
-
-        System.out.println("\n--- Test 5: Valid Teacher ---");
-        try {
-            Teacher t1 = new Teacher("Dr. Hailu Mersha", 45, "Software Engineering", "+251922000001", "hailu@university.edu");
+            Teacher t1 = new Teacher("Dr. Hailu Mersha", 45, "hailu@university.edu", "+251922000001", "Software Engineering");
             t1.displayInfo();
-        } catch (UniversityException e) {
+        } catch (InvalidNameException | InvalidAgeException e) {
             System.out.println("Error: " + e);
         }
 
-        System.out.println("\n--- Test 6: Invalid Subject ---");
-        try {
-            Teacher t2 = new Teacher("Dr. Tigist Bekele", 38, "", "+251922000002", "tigist@university.edu");
-            t2.displayInfo();
-        } catch (InvalidSubjectException e) {
-            System.out.println("Caught InvalidSubjectException: " + e.getMessage());
-        } catch (UniversityException e) {
-            System.out.println("Caught UniversityException: " + e.getMessage());
-        }
-
-        System.out.println("\n--- Test 7: Student Not Found ---");
+        System.out.println("\n--- Test 5: Student Not Found ---");
         try {
             findStudent("UGR/9999/99");
         } catch (StudentNotFoundException e) {
@@ -74,50 +52,50 @@ public class Main {
             System.out.println("Error Code: " + e.getErrorCode());
         }
 
-        System.out.println("\n--- Test 8: Duplicate Student ---");
+        System.out.println("\n--- Test 6: Duplicate Student ---");
         try {
             registerStudent("UGR/0113/24");
         } catch (DuplicateStudentException e) {
             System.out.println("Caught DuplicateStudentException: " + e.getMessage());
         }
 
-        System.out.println("\n--- Test 9: Enrollable & Printable ---");
+        System.out.println("\n--- Test 7: Enrollable ---");
         try {
-            Student s5 = new Student("Luna Lovegood", 19, "UGR/0500/24", "+251911000005", "luna@university.edu");
-            
+            Student s5 = new Student("Luna Lovegood", 19, "luna@university.edu", "+251911000005", "UGR/0500/24", "Magical Studies", 3.9);
+
             System.out.println("[Before enrollment]");
-            s5.printDetails();
-            
+            s5.displayInfo();
+
             System.out.println("\n[Enrolling student]");
             s5.enroll("Defense Against the Dark Arts");
-            
+
             System.out.println("\n[After enrollment]");
-            s5.printDetails();
-        } catch (UniversityException e) {
+            s5.displayInfo(true);
+        } catch (InvalidNameException | InvalidAgeException e) {
             System.out.println("Error: " + e);
         }
 
-        System.out.println("\n--- Test 10: Searchable ---");
+        System.out.println("\n--- Test 8: Searchable ---");
         try {
-            Student s5 = new Student("Luna Lovegood", 19, "UGR/0500/24", "+251911000005", "luna@university.edu");
+            Student s5 = new Student("Luna Lovegood", 19, "luna@university.edu", "+251911000005", "UGR/0500/24", "Magical Studies", 3.9);
             s5.enroll("Defense Against the Dark Arts");
-            
-            Teacher t1 = new Teacher("Dr. Hailu Mersha", 45, "Software Engineering", "+251922000001", "hailu@university.edu");
-            
+
+            Teacher t1 = new Teacher("Dr. Hailu Mersha", 45, "hailu@university.edu", "+251922000001", "Software Engineering");
+
             System.out.println("Search 'Luna':");
             System.out.println("  Student matches: " + s5.matchesSearch("Luna"));
             System.out.println("  Teacher matches: " + t1.matchesSearch("Luna"));
-            
+
             System.out.println("\nSearch 'Software':");
             System.out.println("  Student matches: " + s5.matchesSearch("Software"));
             System.out.println("  Teacher matches: " + t1.matchesSearch("Software"));
-            
+
             System.out.println("\nSearch 'UGR/0500/24':");
             System.out.println("  Student matches: " + s5.matchesSearch("UGR/0500/24"));
-            
+
             System.out.println("\nSearch 'Defense':");
             System.out.println("  Student matches: " + s5.matchesSearch("Defense"));
-        } catch (UniversityException e) {
+        } catch (InvalidNameException | InvalidAgeException e) {
             System.out.println("Error: " + e);
         }
 

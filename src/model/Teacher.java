@@ -1,51 +1,48 @@
 package model;
 
-import exceptions.InvalidAgeException;
+import interfaces.Searchable;
 import exceptions.InvalidNameException;
-import exceptions.InvalidSubjectException;
-import interfaces.Printable;
+import exceptions.InvalidAgeException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Teacher extends Person implements Printable {
-    public String subject;
+public class Teacher extends Person implements Searchable {
 
-    public Teacher(String name, int age, String email, String phoneNumber, String subject)
-            throws InvalidNameException, InvalidAgeException, InvalidSubjectException {
-        super(name, age, email, phoneNumber);
-        if (subject == null || subject.trim().isEmpty()) {
-            throw new InvalidSubjectException(subject);
-        }
-        this.subject = subject.trim();
+    protected String department;
+    private List<String> coursesTaught;
+
+    public Teacher(String name, int age, String email, String phoneNumber, String department) throws InvalidNameException, InvalidAgeException {
+        super(name, age, email, phoneNumber, "TCH-" + name.replaceAll("\\s+", "").toUpperCase());
+        this.department = department;
+        this.coursesTaught = new ArrayList<>();
     }
 
+    public String getDepartment() { return department; }
+    public List<String> getCoursesTaught() { return coursesTaught; }
+
+    public void assignCourse(String courseName) {
+        if (!coursesTaught.contains(courseName)) {
+            coursesTaught.add(courseName);
+        }
+    }
+
+    @Override
+    public boolean matchesSearch(String query) {
+        String q = query.toLowerCase();
+        return name.toLowerCase().contains(q) || department.toLowerCase().contains(q);
+    }
+
+    @Override
+    public String getRole() { return "Teacher"; }
+
+    @Override
     public void displayInfo() {
-        super.displayInfo();
-        System.out.println("Subject: " + subject);
-    }
-
-    @Override
-    public void printDetails() {
-        displayInfo();
-    }
-
-    @Override
-    public boolean matchesSearch(String keyword) {
-        if (super.matchesSearch(keyword)) {
-            return true;
-        }
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return false;
-        }
-        String kw = keyword.toLowerCase().trim();
-        return subject.toLowerCase().contains(kw);
+        System.out.printf("%s [ID=%s, Name=%s, Age=%d, Department=%s]%n",
+                getRole(), id, name, age, department);
     }
 
     @Override
     public String toString() {
-        return super.toString() + " | Subject: " + subject;
-    }
-
-    @Override
-    public String getRole() {
-        return "Teacher";
+        return super.toString() + ", Department=" + department;
     }
 }

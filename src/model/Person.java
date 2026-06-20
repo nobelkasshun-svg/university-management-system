@@ -4,16 +4,18 @@ import exceptions.InvalidAgeException;
 import exceptions.InvalidNameException;
 
 public abstract class Person {
-    public String name;
-    public int age;
-    public String email;
-    public String phoneNumber;
+    protected String id;
+    protected String name;
+    protected int age;
+    protected String email;
+    protected String phoneNumber;
 
-    public Person(String name, int age, String email, String phoneNumber) throws InvalidNameException, InvalidAgeException {
+    public Person(String name, int age, String email, String phoneNumber, String id) throws InvalidNameException, InvalidAgeException {
         setName(name);
         setAge(age);
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.id = id;
     }
 
     public void setName(String name) throws InvalidNameException {
@@ -33,27 +35,30 @@ public abstract class Person {
         this.age = age;
     }
 
-    public void displayInfo() {
-        System.out.println("Name: " + name);
-        System.out.println("Age: " + age);
-        System.out.println("Email: " + email);
-        System.out.println("Phone: " + phoneNumber);
-        System.out.println("Adult: " + isAdult());
-    }
-
     public boolean isAdult() {
         return age >= 18;
     }
 
-    // new feature - returns all info as one clean string
+    // returns all info as one clean string
     public String getFullInfo() {
         return "Name: " + name + ", Age: " + age + ", Email: " + email + ", Phone: " + phoneNumber + ", Adult: " + isAdult();
     }
 
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public int getAge() { return age; }
+    public String getEmail() { return email; }
+    public String getPhoneNumber() { return phoneNumber; }
+
     public abstract String getRole();
+
+    public void displayInfo() {
+        System.out.println(getRole() + " [ID=" + id + ", Name=" + name + ", Age=" + age
+                + ", Email=" + email + ", Phone=" + phoneNumber + ", Adult=" + isAdult() + "]");
+    }
 
     @Override
     public String toString() {
-        return "Name: " + name + " | Age: " + age + " | Email: " + email + " | Phone: " + phoneNumber + " | Adult: " + isAdult();
+        return getRole() + " [ID=" + id + ", Name=" + name + ", Age=" + age + "]";
     }
 }

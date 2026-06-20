@@ -1,102 +1,70 @@
 package model;
 
-import exceptions.InvalidAgeException;
-import exceptions.InvalidNameException;
-import exceptions.InvalidStudentIdException;
+import interfaces.Searchable;
 import interfaces.Enrollable;
-import interfaces.Printable;
+import exceptions.InvalidNameException;
+import exceptions.InvalidAgeException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Student extends Person implements Enrollable, Printable {
-    private String studentId;
-    private String courseName;
-    private double gpa;
+public class Student extends Person implements Searchable, Enrollable {
 
-    public Student(String name, int age, String email, String phoneNumber, String studentId, String courseName, double gpa)
-            throws InvalidNameException, InvalidAgeException, InvalidStudentIdException {
-        super(name, age, email, phoneNumber);
-        setStudentId(studentId);
-        this.courseName = courseName;
+    protected String major;
+    protected double gpa;
+    protected List<String> enrolledCourses;
+
+    public Student(String name, int age, String email, String phoneNumber,
+                    String id, String major, double gpa) throws InvalidNameException, InvalidAgeException {
+        super(name, age, email, phoneNumber, id);
+        this.major = major;
         this.gpa = gpa;
+        this.enrolledCourses = new ArrayList<>();
     }
 
-    public Student(String name, int age, String studentId, String phoneNumber, String email)
-            throws InvalidNameException, InvalidAgeException, InvalidStudentIdException {
-        this(name, age, email, phoneNumber, studentId, null, 0.0);
+    public Student(String name, int age, String email, String phoneNumber, String id) throws InvalidNameException, InvalidAgeException {
+        this(name, age, email, phoneNumber, id, "Undeclared", 0.0);
     }
 
-    public void setStudentId(String studentId) throws InvalidStudentIdException {
-        if (studentId == null || studentId.trim().isEmpty()) {
-            throw new InvalidStudentIdException(studentId);
-        }
-        this.studentId = studentId;
-    }
+    public String getMajor() { return major; }
+    public double getGpa() { return gpa; }
+    public boolean isAdult() { return age >= 18; }
+    public boolean isPassingGPA() { return gpa >= 2.0; }
+    public List<String> getEnrolledCourses() { return enrolledCourses; }
 
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public String getCourseName() {
-        return courseName;
-    }
-
-    public double getGpa() {
-        return gpa;
-    }
-
-    public boolean isPassingGPA() {
-        return gpa >= 2.0;
+    @Override
+    public void enroll(String courseName) {
+        enrolledCourses.add(courseName);
     }
 
     @Override
-    public void displayInfo() {
-        super.displayInfo();
-        System.out.println("Student ID: " + studentId);
-        System.out.println("Course: " + courseName);
-        System.out.println("GPA: " + gpa);
-        System.out.println("Passing: " + isPassingGPA());
+    public boolean matchesSearch(String query) {
+        String q = query.toLowerCase();
+        return name.toLowerCase().contains(q)
+                || id.toLowerCase().contains(q)
+                || major.toLowerCase().contains(q)
+                || enrolledCourses.stream().anyMatch(c -> c.toLowerCase().contains(q));
     }
 
-    public void displayInfo(boolean showContact) {
+    @Override
+    public String getRole() { return "Student"; }
+
+    @Override
+    public void displayInfo() {
+        System.out.printf("%s [ID=%s, Name=%s, Age=%d, Major=%s, GPA=%.2f]%n",
+                getRole(), id, name, age, major, gpa);
+    }
+
+    public void displayInfo(boolean detailed) {
         displayInfo();
-        if (showContact) {
-            System.out.println("Email: " + email);
-            System.out.println("Phone: " + phoneNumber);
+        if (detailed) {
+            System.out.println("   Email: " + email);
+            System.out.println("   Phone: " + phoneNumber);
+            System.out.println("   Enrolled Courses: " + enrolledCourses);
         }
     }
 
     @Override
     public String toString() {
-        return super.toString() + " | Student ID: " + studentId + " | Course: " + courseName + " | GPA: " + gpa;
-    }
-
-    public String getRole() {
-        return "Student";
-    }
-
-    @Override
-    public void enroll(String courseName) {
-        if (courseName == null || courseName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Course name cannot be null or empty");
-        }
-        this.courseName = courseName.trim();
-        System.out.println("Student " + getName() + " (ID: " + studentId + ") successfully enrolled in: " + this.courseName);
-    }
-
-    @Override
-    public void printDetails() {
-        displayInfo();
-    }
-
-    @Override
-    public boolean matchesSearch(String keyword) {
-        if (super.matchesSearch(keyword)) {
-            return true;
-        }
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return false;
-        }
-        String kw = keyword.toLowerCase().trim();
-        return studentId.toLowerCase().contains(kw) ||
-               (courseName != null && courseName.toLowerCase().contains(kw));
+        return super.toString() + ", Major=" + major + ", GPA=" + gpa;
     }
 }
