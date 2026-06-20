@@ -1,5 +1,5 @@
 package interfaces;
 
 public interface Searchable {
-    boolean matchesSearch(String keyword);
+    boolean matchesSearch(String query);
 }

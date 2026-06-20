@@ -1,62 +1,35 @@
 package model;
 
-import exceptions.InvalidAgeException;
-import exceptions.InvalidNameException;
-import interfaces.Searchable;
+public abstract class Person {
+    protected String id;
+    protected String name;
+    protected int age;
+    protected String email;
+    protected String phoneNumber;
 
-public abstract class Person implements Searchable {
-    public String name;
-    public int age;
-    public String email;
-    public String phoneNumber;
-
-    public Person(String name, int age, String email, String phoneNumber) throws InvalidNameException, InvalidAgeException {
-        setName(name);
-        setAge(age);
+    public Person(String name, int age, String email, String phoneNumber, String id) {
+        this.name = name;
+        this.age = age;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.id = id;
     }
 
-    public void setName(String name) throws InvalidNameException {
-        if (name == null || name.trim().isEmpty()) {
-            throw new InvalidNameException(name, "Name cannot be null or empty");
-        }
-        if (!name.matches("[a-zA-Z .]+")) {
-            throw new InvalidNameException(name, "Name can only contain letters and spaces");
-        }
-        this.name = name.trim();
-    }
-
-    public void setAge(int age) throws InvalidAgeException {
-        if (age <= 0 || age > 120) {
-            throw new InvalidAgeException(age);
-        }
-        this.age = age;
-    }
-
-    public void displayInfo() {
-        System.out.println("Name: " + name);
-        System.out.println("Age: " + age);
-        System.out.println("Email: " + email);
-        System.out.println("Phone: " + phoneNumber);
-    }
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public int getAge() { return age; }
+    public String getEmail() { return email; }
+    public String getPhoneNumber() { return phoneNumber; }
 
     public abstract String getRole();
 
+    public void displayInfo() {
+        System.out.println(getRole() + " [ID=" + id + ", Name=" + name + ", Age=" + age
+                + ", Email=" + email + ", Phone=" + phoneNumber + "]");
+    }
+
     @Override
     public String toString() {
-        return "Name: " + name + " | Age: " + age + " | Email: " + email + " | Phone: " + phoneNumber;
-    }
-
-    @Override
-    public boolean matchesSearch(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return false;
-        }
-        return name.toLowerCase().contains(keyword.toLowerCase().trim());
-    }
-
-    public String getName() {
-        return name;
+        return getRole() + " [ID=" + id + ", Name=" + name + ", Age=" + age + "]";
     }
 }
