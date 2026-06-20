@@ -3,7 +3,6 @@ package main;
 import exceptions.*;
 import model.Student;
 import model.Teacher;
-import interfaces.Enrollable;
 import interfaces.Printable;
 import interfaces.Searchable;
 

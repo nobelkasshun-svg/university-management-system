@@ -2,9 +2,8 @@ package model;
 
 import exceptions.InvalidAgeException;
 import exceptions.InvalidNameException;
-import interfaces.Searchable;
 
-public abstract class Person implements Searchable {
+public abstract class Person {
     public String name;
     public int age;
     public String email;
@@ -39,24 +38,22 @@ public abstract class Person implements Searchable {
         System.out.println("Age: " + age);
         System.out.println("Email: " + email);
         System.out.println("Phone: " + phoneNumber);
+        System.out.println("Adult: " + isAdult());
+    }
+
+    public boolean isAdult() {
+        return age >= 18;
+    }
+
+    // new feature - returns all info as one clean string
+    public String getFullInfo() {
+        return "Name: " + name + ", Age: " + age + ", Email: " + email + ", Phone: " + phoneNumber + ", Adult: " + isAdult();
     }
 
     public abstract String getRole();
 
     @Override
     public String toString() {
-        return "Name: " + name + " | Age: " + age + " | Email: " + email + " | Phone: " + phoneNumber;
-    }
-
-    @Override
-    public boolean matchesSearch(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return false;
-        }
-        return name.toLowerCase().contains(keyword.toLowerCase().trim());
-    }
-
-    public String getName() {
-        return name;
+        return "Name: " + name + " | Age: " + age + " | Email: " + email + " | Phone: " + phoneNumber + " | Adult: " + isAdult();
     }
 }
