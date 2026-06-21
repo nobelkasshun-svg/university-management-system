@@ -1,8 +1,8 @@
 package model;
 
-import interfaces.Searchable;
-import exceptions.InvalidNameException;
 import exceptions.InvalidAgeException;
+import exceptions.InvalidNameException;
+import interfaces.Searchable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +10,31 @@ public class Teacher extends Person implements Searchable {
 
     protected String department;
     private List<String> coursesTaught;
+public Teacher(String name, int age, String email, String phoneNumber, String department)
+            throws InvalidNameException, InvalidAgeException {
+        super(name, age, email, phoneNumber, generateId(name));
+        validateName(name);
+        validateAge(age);
 
-    public Teacher(String name, int age, String email, String phoneNumber, String department) throws InvalidNameException, InvalidAgeException {
-        super(name, age, email, phoneNumber, "TCH-" + name.replaceAll("\\s+", "").toUpperCase());
         this.department = department;
         this.coursesTaught = new ArrayList<>();
+    }
+
+    private static String generateId(String name) {
+        String safeName = (name == null) ? "" : name.replaceAll("\\s+", "").toUpperCase();
+        return "TCH-" + safeName;
+    }
+
+    private static void validateName(String name) throws InvalidNameException {
+        if (name == null || name.trim().isEmpty()) {
+            throw new InvalidNameException("Teacher name cannot be null or empty");
+        }
+    }
+
+    private static void validateAge(int age) throws InvalidAgeException {
+        if (age <= 0 || age > 120) {
+            throw new InvalidAgeException("Teacher age must be between 1 and 120, got: " + age);
+        }
     }
 
     public String getDepartment() { return department; }

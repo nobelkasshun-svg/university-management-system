@@ -1,16 +1,15 @@
 package exceptions;
 
-public class InvalidAgeException extends UniversityException {
-
+public class InvalidAgeException extends Exception {
     private int invalidAge;
 
-    public InvalidAgeException(int age) {
-        super("Invalid age: " + age + ". Age must be between 1 and 120.", "INVALID_AGE");
-        this.invalidAge = age;
+    public InvalidAgeException(String message) {
+        super(message);
     }
 
-    public InvalidAgeException(String message) {
-        super(message, "INVALID_AGE");
+    public InvalidAgeException(int invalidAge) {
+        super("Invalid age: " + invalidAge);
+        this.invalidAge = invalidAge;
     }
 
     public int getInvalidAge() {

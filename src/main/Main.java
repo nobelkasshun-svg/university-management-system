@@ -88,9 +88,7 @@ public class Main {
 
             System.out.println("\nSearch 'Software':");
             System.out.println("  Student matches: " + s5.matchesSearch("Software"));
-            System.out.println("  Teacher matches: " + t1.matchesSearch("Software"));
-
-            System.out.println("\nSearch 'UGR/0500/24':");
+            System.out.println("  Teacher matches: " + t1.matchesSearch("Software"));System.out.println("\nSearch 'UGR/0500/24':");
             System.out.println("  Student matches: " + s5.matchesSearch("UGR/0500/24"));
 
             System.out.println("\nSearch 'Defense':");

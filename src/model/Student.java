@@ -1,10 +1,10 @@
 package model;
 
-import interfaces.Searchable;
-import interfaces.Enrollable;
-import interfaces.Attendable;
-import exceptions.InvalidNameException;
 import exceptions.InvalidAgeException;
+import exceptions.InvalidNameException;
+import interfaces.Attendable;
+import interfaces.Enrollable;
+import interfaces.Searchable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +17,11 @@ public class Student extends Person implements Searchable, Enrollable, Attendabl
     protected int daysPresent;
 
     public Student(String name, int age, String email, String phoneNumber,
-                    String id, String major, double gpa) throws InvalidNameException, InvalidAgeException {
+                    String id, String major, double gpa)
+            throws InvalidNameException, InvalidAgeException {
         super(name, age, email, phoneNumber, id);
+        validateName(name);
+        validateAge(age);
         this.major = major;
         this.gpa = gpa;
         this.enrolledCourses = new ArrayList<>();
@@ -26,8 +29,21 @@ public class Student extends Person implements Searchable, Enrollable, Attendabl
         this.daysPresent = 0;
     }
 
-    public Student(String name, int age, String email, String phoneNumber, String id) throws InvalidNameException, InvalidAgeException {
+    public Student(String name, int age, String email, String phoneNumber, String id)
+            throws InvalidNameException, InvalidAgeException {
         this(name, age, email, phoneNumber, id, "Undeclared", 0.0);
+    }
+
+    private static void validateName(String name) throws InvalidNameException {
+        if (name == null || name.trim().isEmpty()) {
+            throw new InvalidNameException("Student name cannot be null or empty");
+        }
+    }
+
+    private static void validateAge(int age) throws InvalidAgeException {
+        if (age <= 0 || age > 120) {
+            throw new InvalidAgeException("Student age must be between 1 and 120, got: " + age);
+        }
     }
 
     public String getMajor() { return major; }

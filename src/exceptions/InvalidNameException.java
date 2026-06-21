@@ -1,17 +1,15 @@
 package exceptions;
 
-public class InvalidNameException extends UniversityException {
-
+public class InvalidNameException extends Exception {
     private String invalidName;
 
-    public InvalidNameException(String name) {
-        super("Invalid name: '" + name + "'. Name cannot be null or empty.", "INVALID_NAME");
-        this.invalidName = name;
+    public InvalidNameException(String message) {
+        super(message);
     }
 
-    public InvalidNameException(String name, String reason) {
-        super("Invalid name: '" + name + "'. Reason: " + reason, "INVALID_NAME");
-        this.invalidName = name;
+    public InvalidNameException(String invalidName, String message) {
+        super(message);
+        this.invalidName = invalidName;
     }
 
     public String getInvalidName() {
