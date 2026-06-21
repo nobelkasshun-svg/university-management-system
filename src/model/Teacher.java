@@ -10,12 +10,12 @@ public class Teacher extends Person implements Searchable {
 
     protected String department;
     private List<String> coursesTaught;
-
-    public Teacher(String name, int age, String email, String phoneNumber, String department)
+public Teacher(String name, int age, String email, String phoneNumber, String department)
             throws InvalidNameException, InvalidAgeException {
         super(name, age, email, phoneNumber, generateId(name));
         validateName(name);
         validateAge(age);
+
         this.department = department;
         this.coursesTaught = new ArrayList<>();
     }
