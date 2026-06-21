@@ -2,16 +2,19 @@ package model;
 
 import interfaces.Searchable;
 import interfaces.Enrollable;
+import interfaces.Attendable;
 import exceptions.InvalidNameException;
 import exceptions.InvalidAgeException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Student extends Person implements Searchable, Enrollable {
+public class Student extends Person implements Searchable, Enrollable, Attendable {
 
     protected String major;
     protected double gpa;
     protected List<String> enrolledCourses;
+    protected int totalDays;
+    protected int daysPresent;
 
     public Student(String name, int age, String email, String phoneNumber,
                     String id, String major, double gpa) throws InvalidNameException, InvalidAgeException {
@@ -19,6 +22,8 @@ public class Student extends Person implements Searchable, Enrollable {
         this.major = major;
         this.gpa = gpa;
         this.enrolledCourses = new ArrayList<>();
+        this.totalDays = 0;
+        this.daysPresent = 0;
     }
 
     public Student(String name, int age, String email, String phoneNumber, String id) throws InvalidNameException, InvalidAgeException {
@@ -43,6 +48,39 @@ public class Student extends Person implements Searchable, Enrollable {
                 || id.toLowerCase().contains(q)
                 || major.toLowerCase().contains(q)
                 || enrolledCourses.stream().anyMatch(c -> c.toLowerCase().contains(q));
+    }
+
+    // Attendable implementation
+    @Override
+    public void markPresent() {
+        totalDays++;
+        daysPresent++;
+    }
+
+    @Override
+    public void markAbsent() {
+        totalDays++;
+    }
+
+    @Override
+    public int getTotalDays() {
+        return totalDays;
+    }
+
+    @Override
+    public int getDaysPresent() {
+        return daysPresent;
+    }
+
+    @Override
+    public double getAttendancePercentage() {
+        if (totalDays == 0) return 0.0;
+        return (daysPresent * 100.0) / totalDays;
+    }
+
+    @Override
+    public boolean meetsAttendanceRequirement(double requiredPercentage) {
+        return getAttendancePercentage() >= requiredPercentage;
     }
 
     @Override
