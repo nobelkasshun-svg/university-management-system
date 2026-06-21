@@ -1,15 +1,7 @@
 package exceptions;
 
-public class DuplicateStudentException extends UniversityException {
-
-    private String duplicateId;
-
+public class DuplicateStudentException extends Exception {
     public DuplicateStudentException(String studentId) {
-        super("A student with ID '" + studentId + "' already exists in the system.", "DUPLICATE_STUDENT");
-        this.duplicateId = studentId;
-    }
-
-    public String getDuplicateId() {
-        return duplicateId;
+        super("A student with ID " + studentId + " is already registered");
     }
 }

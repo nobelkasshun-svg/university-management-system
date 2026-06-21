@@ -1,5 +1,8 @@
 package model;
 
+import exceptions.InvalidNameException;
+import exceptions.InvalidAgeException;
+
 public class GraduateStudent extends Student {
 
     public enum DegreeLevel {
@@ -12,7 +15,7 @@ public class GraduateStudent extends Student {
 
     // Full constructor
     public GraduateStudent(String name, int age, String email, String phoneNumber,
-                           String id, String major, double gpa, DegreeLevel degreeLevel) {
+                           String id, String major, double gpa, DegreeLevel degreeLevel) throws InvalidNameException, InvalidAgeException {
         super(name, age, email, phoneNumber, id, major, gpa);
         this.degreeLevel = degreeLevel;
         this.thesisTitle = "Undeclared";
@@ -21,7 +24,7 @@ public class GraduateStudent extends Student {
 
     // Short constructor (no thesis/advisor yet)
     public GraduateStudent(String name, int age, String email, String phoneNumber,
-                           String id, DegreeLevel degreeLevel) {
+                           String id, DegreeLevel degreeLevel) throws InvalidNameException, InvalidAgeException {
         this(name, age, email, phoneNumber, id, "Undeclared", 0.0, degreeLevel);
     }
 

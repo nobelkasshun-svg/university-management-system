@@ -1,4 +1,4 @@
-package service;
+package database;
 
 import model.Course;
 import model.Student;

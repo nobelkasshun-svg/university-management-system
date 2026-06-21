@@ -1,0 +1,10 @@
+[1mdiff --git a/src/database/UniversityService.java b/src/database/UniversityService.java[m
+[1mindex 6737bd8..f188157 100644[m
+[1m--- a/src/database/UniversityService.java[m
+[1m+++ b/src/database/UniversityService.java[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-package service;[m
+[32m+[m[32mpackage database;[m
+ [m
+ import model.Course;[m
+ import model.Student;[m

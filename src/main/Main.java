@@ -1,82 +1,86 @@
 package main;
 
+import exceptions.*;
 import model.Student;
 import model.Teacher;
-import database.Database;
-import exceptions.GradeChecker;
-import exceptions.InvalidGradeException;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("===== University Management System =====\n");
+
+        System.out.println("--- Test 1: Valid Student ---");
         try {
-            Student s1 = new Student("Abel Tesfaye", 20, "abel@uni.com", "0911111111", "STU001", "Computer Science", 3.5);
-            Student s2 = new Student("Sara Kebede", 22, "sara@uni.com", "0922222222", "STU002", "Software Engineering", 1.8);
-            Teacher t1 = new Teacher("Dr. John", 45, "john@uni.com", "0933333333", "Math");
-
-            System.out.println("--- Student Info ---");
+            Student s1 = new Student("Biruk Alemu", 21, "biruk@university.edu", "+251911000001", "UGR/0113/24", "Computer Science", 3.5);
             s1.displayInfo();
-            System.out.println();
+        } catch (InvalidNameException | InvalidAgeException e) {
+            System.out.println("Error: " + e);
+        }
+
+        System.out.println("\n--- Test 2: Invalid Age ---");
+        try {
+            Student s2 = new Student("Abel Tesfaye", -5, "abel@university.edu", "+251911000002", "UGR/0200/24", "Software Engineering", 3.0);
             s2.displayInfo();
-            System.out.println();
+        } catch (InvalidAgeException e) {
+            System.out.println("Caught InvalidAgeException: " + e.getMessage());
+        } catch (InvalidNameException e) {
+            System.out.println("Caught InvalidNameException: " + e.getMessage());
+        }
 
-            System.out.println("--- Teacher Info ---");
+        System.out.println("\n--- Test 3: Invalid Name ---");
+        try {
+            Student s3 = new Student("", 20, "s3@university.edu", "+251911000003", "UGR/0300/24", "Math", 2.8);
+            s3.displayInfo();
+        } catch (InvalidNameException e) {
+            System.out.println("Caught InvalidNameException: " + e.getMessage());
+        } catch (InvalidAgeException e) {
+            System.out.println("Caught InvalidAgeException: " + e.getMessage());
+        }
+
+        System.out.println("\n--- Test 4: Valid Teacher ---");
+        try {
+            Teacher t1 = new Teacher("Dr. Hailu Mersha", 45, "hailu@university.edu", "+251922000001", "Software Engineering");
             t1.displayInfo();
-            System.out.println();
+        } catch (InvalidNameException | InvalidAgeException e) {
+            System.out.println("Error: " + e);
+        }
 
-            System.out.println("--- Adult Check ---");
-            System.out.println(s1.getName() + " is adult: " + s1.isAdult());
-            System.out.println(s2.getName() + " is adult: " + s2.isAdult());
-            System.out.println();
+        System.out.println("\n--- Test 5: Student Not Found ---");
+        try {
+            findStudent("UGR/9999/99");
+        } catch (StudentNotFoundException e) {
+            System.out.println("Caught StudentNotFoundException: " + e.getMessage());
+            System.out.println("Error Code: " + e.getErrorCode());
+        }
 
-            System.out.println("--- GPA Check ---");
-            System.out.println(s1.getName() + " passing: " + s1.isPassingGPA());
-            System.out.println(s2.getName() + " passing: " + s2.isPassingGPA());
-            System.out.println();
+        System.out.println("\n--- Test 6: Duplicate Student ---");
+        try {
+            registerStudent("UGR/0113/24");
+        } catch (DuplicateStudentException e) {
+            System.out.println("Caught DuplicateStudentException: " + e.getMessage());
+        }
 
-            System.out.println("--- toString() ---");
-            System.out.println(s1);
-            System.out.println(s2);
-            System.out.println(t1);
-            System.out.println();
+        System.out.println("\n--- Test 7: Enrollable ---");
+        try {
+            Student s5 = new Student("Luna Lovegood", 19, "luna@university.edu", "+251911000005", "UGR/0500/24", "Magical Studies", 3.9);
 
-            System.out.println("--- Overloading displayInfo ---");
-            s1.displayInfo(true);
-            System.out.println();
+            System.out.println("[Before enrollment]");
+            s5.displayInfo();
 
-            System.out.println("--- Polymorphism Demo ---");
-            model.Person[] people = {s1, s2, t1};
-            for (model.Person p : people) {
-                p.displayInfo();
-                System.out.println("Role: " + p.getRole());
-                System.out.println();
-            }
-
-            System.out.println("--- Contact Info ---");
-            System.out.println(s1.getName() + " Email: " + s1.getEmail() + " Phone: " + s1.getPhoneNumber());
-            System.out.println(s2.getName() + " Email: " + s2.getEmail() + " Phone: " + s2.getPhoneNumber());
-            System.out.println(t1.getName() + " Email: " + t1.getEmail() + " Phone: " + t1.getPhoneNumber());
-            System.out.println();
-
-            GradeChecker checker = new GradeChecker();
-            try {
-                checker.checkGrade(95);
-                checker.checkGrade(150);
-            } catch (InvalidGradeException e) {
-                System.out.println("Exception caught: " + e.getMessage());
-            }
-            System.out.println();
-
-            Database db = new Database();
-            db.addStudent(s1);
-            db.addStudent(s2);
-            db.addTeacher(t1);
-            db.showAllStudents();
-            db.showAllTeachers();
-            System.out.println();
-
-            System.out.println("--- Test: Searchable ---");
-            Student s5 = new Student("Luna Lovegood", 19, "luna@university.edu", "+251911000005", "UGR/0500/24");
+            System.out.println("\n[Enrolling student]");
             s5.enroll("Defense Against the Dark Arts");
+
+            System.out.println("\n[After enrollment]");
+            s5.displayInfo(true);
+        } catch (InvalidNameException | InvalidAgeException e) {
+            System.out.println("Error: " + e);
+        }
+
+        System.out.println("\n--- Test 8: Searchable ---");
+        try {
+            Student s5 = new Student("Luna Lovegood", 19, "luna@university.edu", "+251911000005", "UGR/0500/24", "Magical Studies", 3.9);
+            s5.enroll("Defense Against the Dark Arts");
+
+            Teacher t1 = new Teacher("Dr. Hailu Mersha", 45, "hailu@university.edu", "+251922000001", "Software Engineering");
 
             System.out.println("Search 'Luna':");
             System.out.println("  Student matches: " + s5.matchesSearch("Luna"));
@@ -84,18 +88,25 @@ public class Main {
 
             System.out.println("\nSearch 'Software':");
             System.out.println("  Student matches: " + s5.matchesSearch("Software"));
-            System.out.println("  Teacher matches: " + t1.matchesSearch("Software"));
-
-            System.out.println("\nSearch 'UGR/0500/24':");
+            System.out.println("  Teacher matches: " + t1.matchesSearch("Software"));System.out.println("\nSearch 'UGR/0500/24':");
             System.out.println("  Student matches: " + s5.matchesSearch("UGR/0500/24"));
 
             System.out.println("\nSearch 'Defense':");
             System.out.println("  Student matches: " + s5.matchesSearch("Defense"));
-
-            System.out.println("\n===== All Tests Completed =====");
-
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+        } catch (InvalidNameException | InvalidAgeException e) {
+            System.out.println("Error: " + e);
         }
+
+        System.out.println("\n===== All Tests Completed =====");
+    }
+
+    static void findStudent(String id) throws StudentNotFoundException {
+        System.out.println("Searching for student: " + id);
+        throw new StudentNotFoundException(id);
+    }
+
+    static void registerStudent(String id) throws DuplicateStudentException {
+        System.out.println("Attempting to register student: " + id);
+        throw new DuplicateStudentException(id);
     }
 }
