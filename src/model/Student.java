@@ -32,6 +32,11 @@ public class Student extends Person implements Searchable, Enrollable {
     public boolean isPassingGPA()           { return gpa >= 2.0; }
     public List<String> getEnrolledCourses(){ return enrolledCourses; }
 
+
+    public int getTotalEnrolledCourses() {
+        return enrolledCourses.size();
+    }
+
     @Override
     public void enroll(String courseName) {
         if (!enrolledCourses.contains(courseName)) {
@@ -39,6 +44,15 @@ public class Student extends Person implements Searchable, Enrollable {
             System.out.println(name + " enrolled in: " + courseName);
         } else {
             System.out.println(name + " is already enrolled in: " + courseName);
+        }
+    }
+
+    
+    public void unenroll(String courseName) {
+        if (enrolledCourses.remove(courseName)) {
+            System.out.println(name + " unenrolled from: " + courseName);
+        } else {
+            System.out.println(name + " is not enrolled in: " + courseName);
         }
     }
 
@@ -67,7 +81,7 @@ public class Student extends Person implements Searchable, Enrollable {
             System.out.println("   Phone          : " + phoneNumber);
             System.out.println("   Passing GPA    : " + isPassingGPA());
             System.out.println("   Enrolled       : " + enrolledCourses);
-            // ─── Validator Output ───
+            System.out.println("   Total Courses  : " + getTotalEnrolledCourses()); // COMMIT 2
             System.out.println("   Valid          : " + isValid());
             System.out.println("   Validation     : " + getValidationSummary());
         }
