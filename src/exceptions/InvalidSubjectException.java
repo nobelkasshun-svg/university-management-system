@@ -1,4 +1,4 @@
-package exceptions;
+ackage exceptions;
 
 public class InvalidSubjectException extends UniversityException {
 
