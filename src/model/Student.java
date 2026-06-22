@@ -14,7 +14,7 @@ public class Student extends Person implements Searchable, Enrollable {
     protected List<String> enrolledCourses;
 
     public Student(String name, int age, String email, String phoneNumber,
-                    String id, String major, double gpa)
+                   String id, String major, double gpa)
             throws InvalidNameException, InvalidAgeException {
         super(name, age, email, phoneNumber, id);
         this.major = major;
@@ -27,14 +27,19 @@ public class Student extends Person implements Searchable, Enrollable {
         this(name, age, email, phoneNumber, id, "Undeclared", 0.0);
     }
 
-    public String getMajor() { return major; }
-    public double getGpa() { return gpa; }
-    public boolean isPassingGPA() { return gpa >= 2.0; }
-    public List<String> getEnrolledCourses() { return enrolledCourses; }
+    public String getMajor()                { return major; }
+    public double getGpa()                  { return gpa; }
+    public boolean isPassingGPA()           { return gpa >= 2.0; }
+    public List<String> getEnrolledCourses(){ return enrolledCourses; }
 
     @Override
     public void enroll(String courseName) {
-        enrolledCourses.add(courseName);
+        if (!enrolledCourses.contains(courseName)) {
+            enrolledCourses.add(courseName);
+            System.out.println(name + " enrolled in: " + courseName);
+        } else {
+            System.out.println(name + " is already enrolled in: " + courseName);
+        }
     }
 
     @Override
@@ -58,9 +63,13 @@ public class Student extends Person implements Searchable, Enrollable {
     public void displayInfo(boolean detailed) {
         displayInfo();
         if (detailed) {
-            System.out.println("   Email: " + email);
-            System.out.println("   Phone: " + phoneNumber);
-            System.out.println("   Enrolled Courses: " + enrolledCourses);
+            System.out.println("   Email          : " + email);
+            System.out.println("   Phone          : " + phoneNumber);
+            System.out.println("   Passing GPA    : " + isPassingGPA());
+            System.out.println("   Enrolled       : " + enrolledCourses);
+            // ─── Validatable output ───
+            System.out.println("   Valid          : " + isValid());
+            System.out.println("   Validation     : " + getValidationSummary());
         }
     }
 

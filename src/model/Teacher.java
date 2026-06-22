@@ -23,7 +23,7 @@ public class Teacher extends Person implements Searchable {
         return "TCH-" + safeName;
     }
 
-    public String getDepartment() { return department; }
+    public String getDepartment()          { return department; }
     public List<String> getCoursesTaught() { return coursesTaught; }
 
     public void assignCourse(String courseName) {
@@ -35,7 +35,8 @@ public class Teacher extends Person implements Searchable {
     @Override
     public boolean matchesSearch(String query) {
         String q = query.toLowerCase();
-        return name.toLowerCase().contains(q) || department.toLowerCase().contains(q);
+        return name.toLowerCase().contains(q)
+                || department.toLowerCase().contains(q);
     }
 
     @Override
@@ -45,6 +46,18 @@ public class Teacher extends Person implements Searchable {
     public void displayInfo() {
         System.out.printf("%s [ID=%s, Name=%s, Age=%d, Department=%s]%n",
                 getRole(), id, name, age, department);
+    }
+
+    public void displayInfo(boolean detailed) {
+        displayInfo();
+        if (detailed) {
+            System.out.println("   Email      : " + email);
+            System.out.println("   Phone      : " + phoneNumber);
+            System.out.println("   Courses    : " + coursesTaught);
+            // ─── Validatable output ───
+            System.out.println("   Valid      : " + isValid());
+            System.out.println("   Validation : " + getValidationSummary());
+        }
     }
 
     @Override

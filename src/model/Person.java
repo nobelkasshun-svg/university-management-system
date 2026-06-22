@@ -2,15 +2,18 @@ package model;
 
 import exceptions.InvalidAgeException;
 import exceptions.InvalidNameException;
+import interfaces.Validatable;
 
-public abstract class Person {
+public abstract class Person implements Validatable {
+
     protected String id;
     protected String name;
     protected int age;
     protected String email;
     protected String phoneNumber;
 
-    public Person(String name, int age, String email, String phoneNumber, String id) throws InvalidNameException, InvalidAgeException {
+    public Person(String name, int age, String email, String phoneNumber, String id)
+            throws InvalidNameException, InvalidAgeException {
         setName(name);
         setAge(age);
         this.email = email;
@@ -35,26 +38,44 @@ public abstract class Person {
         this.age = age;
     }
 
-    public boolean isAdult() {
-        return age >= 18;
+    // ─── Validatable Implementation ─────────────────────────
+    @Override
+    public boolean isValid() {
+        return name != null && !name.trim().isEmpty()
+                && age > 0 && age <= 120
+                && email != null && !email.trim().isEmpty()
+                && phoneNumber != null && !phoneNumber.trim().isEmpty()
+                && id != null && !id.trim().isEmpty();
     }
 
-    // returns all info as one clean string
+    @Override
+    public String getValidationSummary() {
+        return "Name  : " + (name != null && !name.trim().isEmpty() ? "OK" : "INVALID")
+             + " | Age   : " + (age > 0 && age <= 120 ? "OK" : "INVALID")
+             + " | Email : " + (email != null && !email.trim().isEmpty() ? "OK" : "INVALID")
+             + " | Phone : " + (phoneNumber != null && !phoneNumber.trim().isEmpty() ? "OK" : "INVALID")
+             + " | ID    : " + (id != null && !id.trim().isEmpty() ? "OK" : "INVALID");
+    }
+
+    public boolean isAdult() { return age >= 18; }
+
     public String getFullInfo() {
-        return "Name: " + name + ", Age: " + age + ", Email: " + email + ", Phone: " + phoneNumber + ", Adult: " + isAdult();
+        return "Name: " + name + ", Age: " + age + ", Email: " + email
+                + ", Phone: " + phoneNumber + ", Adult: " + isAdult();
     }
 
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public int getAge() { return age; }
-    public String getEmail() { return email; }
+    public String getId()          { return id; }
+    public String getName()        { return name; }
+    public int getAge()            { return age; }
+    public String getEmail()       { return email; }
     public String getPhoneNumber() { return phoneNumber; }
 
     public abstract String getRole();
 
     public void displayInfo() {
         System.out.println(getRole() + " [ID=" + id + ", Name=" + name + ", Age=" + age
-                + ", Email=" + email + ", Phone=" + phoneNumber + ", Adult=" + isAdult() + "]");
+                + ", Email=" + email + ", Phone=" + phoneNumber
+                + ", Adult=" + isAdult() + "]");
     }
 
     @Override
