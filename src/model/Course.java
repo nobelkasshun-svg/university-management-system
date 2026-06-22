@@ -69,4 +69,10 @@ public class Course {
         System.out.println("═".repeat(55));
         System.out.println("Course Code : " + courseCode);
         System.out.println("Course Name : " + courseName);
-        System.out.println("Credits     : " +
+        System.out.println("Credits     : " + credits);
+        System.out.println("Description : " + description);
+        System.out.println("Teacher     : " + (teacher != null ? teacher.getName() : "Unassigned"));
+        System.out.println("Enrolled Students: " + students.size());
+        System.out.println("═".repeat(55));
+    }
+}

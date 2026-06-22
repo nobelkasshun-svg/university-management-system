@@ -3,110 +3,153 @@ package main;
 import exceptions.*;
 import model.Student;
 import model.Teacher;
+import database.UniversityService;
+
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("===== University Management System =====\n");
+        Scanner scanner = new Scanner(System.in);
+        UniversityService service = new UniversityService();
+        boolean running = true;
 
-        System.out.println("--- Test 1: Valid Student ---");
-        try {
-            Student s1 = new Student("Biruk Alemu", 21, "biruk@university.edu", "+251911000001", "UGR/0113/24", "Computer Science", 3.5);
-            s1.displayInfo();
-        } catch (InvalidNameException | InvalidAgeException e) {
-            System.out.println("Error: " + e);
+        System.out.println("===== University Management System =====");
+
+        while (running) {
+            printMenu();
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    addStudent(scanner, service);
+                    break;
+                case "2":
+                    addTeacher(scanner, service);
+                    break;
+                case "3":
+                    service.printAllStudents();
+                    break;
+                case "4":
+                    service.printAllTeachers();
+                    break;
+                case "5":
+                    searchStudents(scanner, service);
+                    break;
+                case "6":
+                    enrollStudent(scanner, service);
+                    break;
+                case "0":
+                    running = false;
+                    System.out.println("Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
         }
 
-        System.out.println("\n--- Test 2: Invalid Age ---");
-        try {
-            Student s2 = new Student("Abel Tesfaye", -5, "abel@university.edu", "+251911000002", "UGR/0200/24", "Software Engineering", 3.0);
-            s2.displayInfo();
-        } catch (InvalidAgeException e) {
-            System.out.println("Caught InvalidAgeException: " + e.getMessage());
-        } catch (InvalidNameException e) {
-            System.out.println("Caught InvalidNameException: " + e.getMessage());
-        }
-
-        System.out.println("\n--- Test 3: Invalid Name ---");
-        try {
-            Student s3 = new Student("", 20, "s3@university.edu", "+251911000003", "UGR/0300/24", "Math", 2.8);
-            s3.displayInfo();
-        } catch (InvalidNameException e) {
-            System.out.println("Caught InvalidNameException: " + e.getMessage());
-        } catch (InvalidAgeException e) {
-            System.out.println("Caught InvalidAgeException: " + e.getMessage());
-        }
-
-        System.out.println("\n--- Test 4: Valid Teacher ---");
-        try {
-            Teacher t1 = new Teacher("Dr. Hailu Mersha", 45, "hailu@university.edu", "+251922000001", "Software Engineering");
-            t1.displayInfo();
-        } catch (InvalidNameException | InvalidAgeException e) {
-            System.out.println("Error: " + e);
-        }
-
-        System.out.println("\n--- Test 5: Student Not Found ---");
-        try {
-            findStudent("UGR/9999/99");
-        } catch (StudentNotFoundException e) {
-            System.out.println("Caught StudentNotFoundException: " + e.getMessage());
-            System.out.println("Error Code: " + e.getErrorCode());
-        }
-
-        System.out.println("\n--- Test 6: Duplicate Student ---");
-        try {
-            registerStudent("UGR/0113/24");
-        } catch (DuplicateStudentException e) {
-            System.out.println("Caught DuplicateStudentException: " + e.getMessage());
-        }
-
-        System.out.println("\n--- Test 7: Enrollable ---");
-        try {
-            Student s5 = new Student("Luna Lovegood", 19, "luna@university.edu", "+251911000005", "UGR/0500/24", "Magical Studies", 3.9);
-
-            System.out.println("[Before enrollment]");
-            s5.displayInfo();
-
-            System.out.println("\n[Enrolling student]");
-            s5.enroll("Defense Against the Dark Arts");
-
-            System.out.println("\n[After enrollment]");
-            s5.displayInfo(true);
-        } catch (InvalidNameException | InvalidAgeException e) {
-            System.out.println("Error: " + e);
-        }
-
-        System.out.println("\n--- Test 8: Searchable ---");
-        try {
-            Student s5 = new Student("Luna Lovegood", 19, "luna@university.edu", "+251911000005", "UGR/0500/24", "Magical Studies", 3.9);
-            s5.enroll("Defense Against the Dark Arts");
-
-            Teacher t1 = new Teacher("Dr. Hailu Mersha", 45, "hailu@university.edu", "+251922000001", "Software Engineering");
-
-            System.out.println("Search 'Luna':");
-            System.out.println("  Student matches: " + s5.matchesSearch("Luna"));
-            System.out.println("  Teacher matches: " + t1.matchesSearch("Luna"));
-
-            System.out.println("\nSearch 'Software':");
-            System.out.println("  Student matches: " + s5.matchesSearch("Software"));
-            System.out.println("  Teacher matches: " + t1.matchesSearch("Software"));System.out.println("\nSearch 'UGR/0500/24':");
-            System.out.println("  Student matches: " + s5.matchesSearch("UGR/0500/24"));
-
-            System.out.println("\nSearch 'Defense':");
-            System.out.println("  Student matches: " + s5.matchesSearch("Defense"));
-        } catch (InvalidNameException | InvalidAgeException e) {
-            System.out.println("Error: " + e);
-        }
-
-        System.out.println("\n===== All Tests Completed =====");
+        scanner.close();
     }
 
-    static void findStudent(String id) throws StudentNotFoundException {
-        System.out.println("Searching for student: " + id);
-        throw new StudentNotFoundException(id);
+    static void printMenu() {
+        System.out.println("\n--- Menu ---");
+        System.out.println("1. Add Student");
+        System.out.println("2. Add Teacher");
+        System.out.println("3. View All Students");
+        System.out.println("4. View All Teachers");
+        System.out.println("5. Search Students");
+        System.out.println("6. Enroll Student in Course");
+        System.out.println("0. Exit");
+        System.out.print("Enter choice: ");
     }
 
-    static void registerStudent(String id) throws DuplicateStudentException {
-        System.out.println("Attempting to register student: " + id);
-        throw new DuplicateStudentException(id);
+    static void addStudent(Scanner scanner, UniversityService service) {
+        try {
+            System.out.print("Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Age: ");
+            int age = Integer.parseInt(scanner.nextLine());
+            System.out.print("Email: ");
+            String email = scanner.nextLine();
+            System.out.print("Phone: ");
+            String phone = scanner.nextLine();
+            System.out.print("Student ID: ");
+            String id = scanner.nextLine();
+            System.out.print("Major: ");
+            String major = scanner.nextLine();
+            System.out.print("GPA: ");
+            double gpa = Double.parseDouble(scanner.nextLine());
+
+            Student student = new Student(name, age, email, phone, id, major, gpa);
+            service.addStudent(student);
+            System.out.println("Student added successfully!");
+        } catch (InvalidNameException | InvalidAgeException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Error: please enter valid numbers for age and GPA.");
+        }
+    }
+
+    static void addTeacher(Scanner scanner, UniversityService service) {
+        try {
+            System.out.print("Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Age: ");
+            int age = Integer.parseInt(scanner.nextLine());
+            System.out.print("Email: ");
+            String email = scanner.nextLine();
+            System.out.print("Phone: ");
+            String phone = scanner.nextLine();
+            System.out.print("Department: ");
+            String department = scanner.nextLine();
+
+            Teacher teacher = new Teacher(name, age, email, phone, department);
+            service.addTeacher(teacher);
+            System.out.println("Teacher added successfully!");
+        } catch (InvalidNameException | InvalidAgeException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Error: please enter a valid number for age.");
+        }
+    }
+
+    static void searchStudents(Scanner scanner, UniversityService service) {
+        System.out.print("Enter search keyword: ");
+        String query = scanner.nextLine();
+        List<Student> students = service.getStudents();
+
+        boolean found = false;
+        for (Student s : students) {
+            if (s.matchesSearch(query)) {
+                s.displayInfo();
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No students matched your search.");
+        }
+    }
+
+    static void enrollStudent(Scanner scanner, UniversityService service) {
+        System.out.print("Enter Student ID: ");
+        String id = scanner.nextLine();
+        Student target = null;
+
+        for (Student s : service.getStudents()) {
+            if (s.getId().equalsIgnoreCase(id)) {
+                target = s;
+                break;
+            }
+        }
+
+        if (target == null) {
+            System.out.println("Student not found.");
+            return;
+        }
+
+        System.out.print("Enter course name to enroll: ");
+        String course = scanner.nextLine();
+        target.enroll(course);
+        System.out.println("Enrolled " + target.getName() + " in " + course);
     }
 }

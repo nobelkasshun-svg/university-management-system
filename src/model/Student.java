@@ -67,7 +67,7 @@ public class Student extends Person implements Searchable, Enrollable {
             System.out.println("   Phone          : " + phoneNumber);
             System.out.println("   Passing GPA    : " + isPassingGPA());
             System.out.println("   Enrolled       : " + enrolledCourses);
-            // ─── Validatable output ───
+            // ─── Validator Output ───
             System.out.println("   Valid          : " + isValid());
             System.out.println("   Validation     : " + getValidationSummary());
         }

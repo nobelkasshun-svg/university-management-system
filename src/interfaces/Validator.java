@@ -1,6 +1,6 @@
 package interfaces;
 
-public interface Validatable {
+public interface Validator {
     boolean isValid();
     String getValidationSummary();
 }

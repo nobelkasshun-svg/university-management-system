@@ -2,9 +2,9 @@ package model;
 
 import exceptions.InvalidAgeException;
 import exceptions.InvalidNameException;
-import interfaces.Validatable;
+import interfaces.Validator;
 
-public abstract class Person implements Validatable {
+public abstract class Person implements Validator {
 
     protected String id;
     protected String name;
@@ -38,7 +38,8 @@ public abstract class Person implements Validatable {
         this.age = age;
     }
 
-    // ─── Validatable Implementation ─────────────────────────
+    // Validator Methods
+    
     @Override
     public boolean isValid() {
         return name != null && !name.trim().isEmpty()
