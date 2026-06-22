@@ -16,8 +16,8 @@ public abstract class Person implements Validator {
             throws InvalidNameException, InvalidAgeException {
         setName(name);
         setAge(age);
-        this.email = email;
-        this.phoneNumber = phoneNumber;
+        setEmail(email);
+        setPhoneNumber(phoneNumber);
         this.id = id;
     }
 
@@ -38,8 +38,23 @@ public abstract class Person implements Validator {
         this.age = age;
     }
 
-    // Validator Methods
-    
+    public void setEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be empty.");
+        }
+        if (!email.contains("@")) {
+            throw new IllegalArgumentException("Email must contain '@'.");
+        }
+        this.email = email.trim();
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+            throw new IllegalArgumentException("Phone number cannot be empty.");
+        }
+        this.phoneNumber = phoneNumber.trim();
+    }
+
     @Override
     public boolean isValid() {
         return name != null && !name.trim().isEmpty()
