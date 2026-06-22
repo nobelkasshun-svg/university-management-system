@@ -90,6 +90,18 @@ public class Grade {
 
     }
 
+    public static boolean isPassingScore(double score) {
+
+        return score >= 0 && score <= 100 && score >= 60;
+
+    }
+
+    public static boolean isValidScore(double score) {
+
+        return score >= 0 && score <= 100;
+
+    }
+
 
 
     public void displayGrade() {
