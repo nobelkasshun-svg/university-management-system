@@ -28,3 +28,4 @@ public class UniversityException extends Exception {
         return "[" + errorCode + "] " + getMessage();
     }
 }
+
