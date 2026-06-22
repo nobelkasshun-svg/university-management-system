@@ -13,3 +13,4 @@ public class TeacherNotFoundException extends UniversityException {
         return searchedName;
     }
 }
+
