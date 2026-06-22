@@ -8,6 +8,7 @@ public class Course {
     private String courseCode;
     private String courseName;
     private int credits;
+    private String description;
     private Teacher teacher;
     private List<Student> students;
 
@@ -15,45 +16,57 @@ public class Course {
         this.courseCode = courseCode;
         this.courseName = courseName;
         this.credits = credits;
+        this.description = "";
         this.students = new ArrayList<>();
     }
 
-    public String getCourseCode() {
-        return courseCode;
+    public Course(String courseCode, String courseName, int credits, String description) {
+        this(courseCode, courseName, credits);
+        this.description = description;
     }
 
-    public String getCourseName() {
-        return courseName;
-    }
+    // ─── Getters ────────────────────────────────────────────
+    public String getCourseCode()      { return courseCode; }
+    public String getCourseName()      { return courseName; }
+    public int getCredits()            { return credits; }
+    public String getDescription()     { return description; }
+    public Teacher getTeacher()        { return teacher; }
+    public List<Student> getStudents() { return students; }
 
-    public int getCredits() {
-        return credits;
-    }
+    // ─── Setters ────────────────────────────────────────────
+    public void setTeacher(Teacher teacher)        { this.teacher = teacher; }
+    public void setDescription(String description) { this.description = description; }
+    public void setCredits(int credits)            { this.credits = credits; }
 
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
-
-    public List<Student> getStudents() {
-        return students;
-    }
-
+    // ─── Student Management ─────────────────────────────────
     public void addStudent(Student student) {
         if (!students.contains(student)) {
             students.add(student);
+            System.out.println("Student '" + student.getName()
+                    + "' enrolled in " + courseName);
+        } else {
+            System.out.println("Student '" + student.getName()
+                    + "' is already enrolled in " + courseName);
         }
     }
 
-    @Override
-    public String toString() {
-        String teacherName = (teacher != null) ? teacher.getName() : "Unassigned";
-        return "Course [" + courseCode + " - " + courseName
-                + ", Credits=" + credits
-                + ", Teacher=" + teacherName
-                + ", Students=" + students.size() + "]";
+    public void removeStudent(Student student) {
+        if (students.remove(student)) {
+            System.out.println("Student '" + student.getName()
+                    + "' removed from " + courseName);
+        } else {
+            System.out.println("Student '" + student.getName()
+                    + "' not found in " + courseName);
+        }
     }
-}
+
+    public boolean hasStudent(Student student) {
+        return students.contains(student);
+    }
+
+    // ─── Display ────────────────────────────────────────────
+    public void displayInfo() {
+        System.out.println("═".repeat(55));
+        System.out.println("Course Code : " + courseCode);
+        System.out.println("Course Name : " + courseName);
+        System.out.println("Credits     : " +
