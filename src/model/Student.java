@@ -17,8 +17,6 @@ public class Student extends Person implements Searchable, Enrollable {
                     String id, String major, double gpa)
             throws InvalidNameException, InvalidAgeException {
         super(name, age, email, phoneNumber, id);
-        validateName(name);
-        validateAge(age);
         this.major = major;
         this.gpa = gpa;
         this.enrolledCourses = new ArrayList<>();
@@ -29,21 +27,8 @@ public class Student extends Person implements Searchable, Enrollable {
         this(name, age, email, phoneNumber, id, "Undeclared", 0.0);
     }
 
-    private static void validateName(String name) throws InvalidNameException {
-        if (name == null || name.trim().isEmpty()) {
-            throw new InvalidNameException("Student name cannot be null or empty");
-        }
-    }
-
-    private static void validateAge(int age) throws InvalidAgeException {
-        if (age <= 0 || age > 120) {
-            throw new InvalidAgeException("Student age must be between 1 and 120, got: " + age);
-        }
-    }
-
     public String getMajor() { return major; }
     public double getGpa() { return gpa; }
-    public boolean isAdult() { return age >= 18; }
     public boolean isPassingGPA() { return gpa >= 2.0; }
     public List<String> getEnrolledCourses() { return enrolledCourses; }
 
