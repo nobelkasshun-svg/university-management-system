@@ -27,11 +27,10 @@ public class Student extends Person implements Searchable, Enrollable {
         this(name, age, email, phoneNumber, id, "Undeclared", 0.0);
     }
 
-    public String getMajor()                { return major; }
-    public double getGpa()                  { return gpa; }
-    public boolean isPassingGPA()           { return gpa >= 2.0; }
-    public List<String> getEnrolledCourses(){ return enrolledCourses; }
-
+    public String getMajor()                 { return major; }
+    public double getGpa()                   { return gpa; }
+    public boolean isPassingGPA()            { return gpa >= 2.0; }
+    public List<String> getEnrolledCourses() { return enrolledCourses; }
 
     public int getTotalEnrolledCourses() {
         return enrolledCourses.size();
@@ -47,7 +46,6 @@ public class Student extends Person implements Searchable, Enrollable {
         }
     }
 
-    
     public void unenroll(String courseName) {
         if (enrolledCourses.remove(courseName)) {
             System.out.println(name + " unenrolled from: " + courseName);
@@ -81,7 +79,7 @@ public class Student extends Person implements Searchable, Enrollable {
             System.out.println("   Phone          : " + phoneNumber);
             System.out.println("   Passing GPA    : " + isPassingGPA());
             System.out.println("   Enrolled       : " + enrolledCourses);
-            System.out.println("   Total Courses  : " + getTotalEnrolledCourses()); // COMMIT 2
+            System.out.println("   Total Courses  : " + getTotalEnrolledCourses());
             System.out.println("   Valid          : " + isValid());
             System.out.println("   Validation     : " + getValidationSummary());
         }
