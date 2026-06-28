@@ -1,7 +1,6 @@
-ackage exceptions;
+package exceptions;
 
 public class InvalidSubjectException extends UniversityException {
-
     private String invalidSubject;
 
     public InvalidSubjectException(String subject) {
