@@ -54,7 +54,6 @@ public class Teacher extends Person implements Searchable {
             System.out.println("   Email      : " + email);
             System.out.println("   Phone      : " + phoneNumber);
             System.out.println("   Courses    : " + coursesTaught);
-            // ─── Validatable output ───
             System.out.println("   Valid      : " + isValid());
             System.out.println("   Validation : " + getValidationSummary());
         }
