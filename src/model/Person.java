@@ -23,7 +23,7 @@ public abstract class Person implements Validator {
 
     public void setName(String name) throws InvalidNameException {
         if (name == null || name.trim().isEmpty()) {
-            throw new InvalidNameException(name, "Name cannot be null or empty");
+            throw new InvalidNameException("", "Name cannot be null or empty");
         }
         if (!name.matches("[a-zA-Z .]+")) {
             throw new InvalidNameException(name, "Name can only contain letters and spaces");
@@ -33,7 +33,7 @@ public abstract class Person implements Validator {
 
     public void setAge(int age) throws InvalidAgeException {
         if (age <= 0 || age > 120) {
-            throw new InvalidAgeException(age);
+            throw new InvalidAgeException((int) age);
         }
         this.age = age;
     }
